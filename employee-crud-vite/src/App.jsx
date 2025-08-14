@@ -3,6 +3,7 @@ import "./App.css";
 import EmployeeForm from "./components/EmployeeForm.jsx";
 import EmployeeTable from "./components/EmployeeTable.jsx";
 import PopupModal from "./components/PopupModal.jsx";
+
 import {
   getEmployees,
   addEmployee,
@@ -15,10 +16,17 @@ export default function App() {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [popupType, setPopupType] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    const res = await getEmployees();
-    setEmployees(res.data);
+    try {
+      const data = await getEmployees(); // getEmployees returns the array directly
+      setEmployees(data || []);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -27,10 +35,7 @@ export default function App() {
 
   const handleAdd = async (form) => {
     try {
-      await addEmployee({
-        ...form,
-        id: Date.now(), // generate unique ID
-      });
+      await addEmployee(form);
       fetchData();
     } catch (error) {
       console.error("Error adding employee:", error);
@@ -38,15 +43,31 @@ export default function App() {
   };
 
   const handleDelete = async (id) => {
-    await deleteEmployee(id);
-    fetchData();
+    try {
+      await deleteEmployee(id);
+      fetchData();
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+    }
   };
 
   const handleEditSave = async () => {
-    await updateEmployee(selectedEmployee.id, selectedEmployee);
-    setShowPopup(false);
-    fetchData();
+    try {
+      await updateEmployee(selectedEmployee.id, selectedEmployee);
+      setShowPopup(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error updating employee:", error);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="container">
+        <h2>Loading employees...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="container">

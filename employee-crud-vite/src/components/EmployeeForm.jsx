@@ -39,7 +39,9 @@ export default function EmployeeForm({ onAdd }) {
         value={form.phone}
         onChange={handleChange}
       />
-      <button onClick={handleSubmit}>Add Employee</button>
+      <button className="btn-add" onClick={handleSubmit}>
+        Add Employee
+      </button>
     </div>
   );
 }
