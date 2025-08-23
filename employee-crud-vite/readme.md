@@ -19,7 +19,7 @@ It can be used as a reference for projects that require syncing data between a f
 ### Tech Stack
 - **Frontend**: React (with Hooks & functional components)  
 - **Build Tool**: Vite  
-- **Styling**: CSS / Tailwind (optional, based on implementation)  
+- **Styling**: CSS / Tailwind (optional, based on implementation)  -> Here I have used CSS MODULES (.module.css) i.e simple css just used CSS by modules..
 - **State Management**: React Hooks / Context API  
 - **Backend / API**: RESTful API for live data updates  
 
